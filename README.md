@@ -16,6 +16,23 @@ I am currently NOT interested in adding software to this setup outside of the so
 Server OS
 * The latest version of Ubuntu Server
 
+## File Layout
+
+The layout of the repository will look like this:
+
+* serverScripts
+  - baseInstalls
+    - webin
+    - docker
+    - samba
+  - troubleShooting
+    - docker
+  - scheduledTasks
+* dockerCompose
+  - standardApps
+  - servarr
+  - optionalApps
+
 ## Automation File Types
 For my setup, I will be hosting a multitude of items to make setting up a home server:
 * Server Scripts (Shell scripts)
@@ -54,8 +71,6 @@ This Docker Compose stack will install all these pieces of software with ease.
 * qbittorrent
 * Plex
 * Jellyfin
-
-
 
 
 
