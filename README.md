@@ -1,6 +1,61 @@
-# servarr
-Docker Compose files for easily making the best serverr setup
-Please see my substack on how to use this git repository.
-*https://jaredheinrichs.substack.com/publish/post/140103210
+Please see my Substack on how to use the scripts on my git repo.
+* https://jaredheinrichs.substack.com/
+
+# My Home Server Setup
+
+This repo came about because several of my friends wanted the same setup I have in my house.
+Unfortunately, there are many manual steps to set it up. After several setups, I started dreading each time I was asked if I could help out.
+While my setup technically used Docker under the covers, it was done very poorly.
+Now that I am more proficient with Linux, Docker and Docker Compose, I feel it is time to automate most of the setup as well as host it on Github.
+
+These scripts are created in a way that will make setting up a home server easy.
+A few people have asked if I can add the program "x" to the list of scripts/compose files.
+I am currently NOT interested in adding software to this setup outside of the software I would use in a typical deployment.
+
+## Requirements:
+Server OS
+* The latest version of Ubuntu Server
+
+## Automation File Types
+For my setup, I will be hosting a multitude of items to make setting up a home server:
+* Server Scripts (Shell scripts)
+  - sh. scripts to install base server software (See Server scripts)
+  - sh. scripts to clean up Docker
+  - sh. scripts to edit files downloaded from git to fit your machine dynamically
+* Docker Compose Files
+
+## Server Scripts
+The shell scripts will allow you to install these pieces of software easily
+* Webmin
+* Docker
+* Samba
+
+## Docker Compose Files
+
+### Standard Home Server Apps
+These are the Docker apps that form the base of the Home Server
+* PiHole
+* AdGuard
+* SpeedTest Tracker
+* Open Speed Test
+
+### Optional Home Server App
+* Cloudflare tunnel
+* MonkeyType
+
+### Servarr
+This Docker Compose stack will install all these pieces of software with ease.
+* gluetun
+* Prowlar
+* Sonarr
+* Radarr
+* Lidarr
+* Readarr
+* qbittorrent
+* Plex
+* Jellyfin
+
+
+
 
 
