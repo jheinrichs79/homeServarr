@@ -55,6 +55,7 @@ These are the Docker apps that form the base of the Home Server
 * AdGuard
 * SpeedTest Tracker
 * Open Speed Test
+* vsCodeServer
 
 ### Optional Home Server App
 * Cloudflare tunnel
