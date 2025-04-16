@@ -56,6 +56,7 @@ These are the Docker apps that form the base of the Home Server
 * SpeedTest Tracker
 * Open Speed Test
 * vsCodeServer
+* Homarr
 
 ### Optional Home Server App
 * Cloudflare tunnel
