@@ -1,4 +1,11 @@
 #!/bin/bash
+#Update Script
+apt update -y
+apt full-upgrade -y
+apt autoremove -y
+apt clean -y
+apt autoclean -y
+#END
 
 # Install git if not already installed
 if ! command -v git &> /dev/null; then
