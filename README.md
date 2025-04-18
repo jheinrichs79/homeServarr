@@ -1,7 +1,9 @@
 Please see my Substack on how to use the scripts on my git repo.
 * https://jaredheinrichs.substack.com/
 
-# My Home Server Setup
+![alt text](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F1b50455a-56e8-4e2c-8430-7eec6b9ab7e5_512x512.png)
+
+# The homeServarr Setup
 
 This repo came about because several of my friends wanted the same setup I have in my house.
 Unfortunately, there are many manual steps to set it up. After several setups, I started dreading each time I was asked if I could help out.
