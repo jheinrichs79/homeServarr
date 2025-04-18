@@ -63,10 +63,9 @@ docker --version
 
 # Install webmin
 echo "Installing webmin..."
-sudo apt-get install -y perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget http://prdownloads.sourceforge.net/webadmin/webmin_2.025_all.deb
-sudo dpkg --install webmin_2.025_all.deb
-rm webmin_2.025_all.deb
+sudo curl -o setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh; sudo bash setup-repos.sh
+sudo apt install -y webmin
+
 
 # Get IP address and display access info
 IP=$(hostname -I | cut -d' ' -f1)
