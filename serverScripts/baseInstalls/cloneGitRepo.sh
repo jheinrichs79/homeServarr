@@ -27,7 +27,7 @@ cd git
 
 # Clone the repository
 echo "Cloning repository..."
-git clone https://github.com/jheinrichs79/HomeServer.git
+git clone https://github.com/jheinrichs79/homeServarr.git
 
 if [ $? -eq 0 ]; then
     echo "Repository cloned successfully!"
@@ -36,5 +36,5 @@ else
 fi
 
 # Make all files and folders executable in the specified directory
-cd ~/git/HomeServer/serverScripts
+cd ~/git/homeServarr/serverScripts
 chmod -R +x .
