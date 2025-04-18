@@ -72,3 +72,57 @@ rm webmin_2.025_all.deb
 IP=$(hostname -I | cut -d' ' -f1)
 echo "Webmin installed successfully!"
 echo "Access Webmin at https://$IP:10000"
+
+# Install Samba and dependencies
+echo "Installing Samba..."
+sudo apt-get update
+sudo apt-get install -y samba samba-common-bin
+
+# Create Samba config backup
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
+# Configure Samba for workgroup
+cat << EOF | sudo tee /etc/samba/smb.conf
+[global]
+workgroup = WORKGROUP
+server string = Samba Server
+security = user
+map to guest = bad user
+unix extensions = yes
+follow symlinks = yes
+wide links = yes
+create mask = 0777
+directory mask = 0777
+force create mode = 0777
+force directory mode = 0777
+
+[homes]
+comment = Home Directories
+browseable = no
+read only = no
+create mask = 0700
+directory mask = 0700
+
+[public]
+comment = Public Share
+path = /samba/public
+browseable = yes
+create mask = 0777
+directory mask = 0777
+read only = no
+guest ok = yes
+EOF
+
+# Create public share directory
+sudo mkdir -p /samba/public
+sudo chmod 777 /samba/public
+
+# Restart Samba service
+sudo systemctl restart smbd
+sudo systemctl restart nmbd
+
+# Add Samba through firewall
+sudo ufw allow samba
+
+echo "Samba installation complete!"
+echo "Default public share created at /samba/public"
