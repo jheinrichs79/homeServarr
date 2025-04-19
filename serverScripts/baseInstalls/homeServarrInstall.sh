@@ -136,7 +136,7 @@ echo "Samba installation complete!"
 echo "Default public share created at /samba/public"
 
 #ClearScreen
-clear
+#clear
 
 echo "Access Webmin at https://$IP:10000"
 echo "Access Network Shares at smb://$IP"
