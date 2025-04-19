@@ -34,7 +34,7 @@ cd git
 
 # Clone the repository
 echo "Cloning repository..."
-git clone https://github.com/jheinrichs79/HomeServer.git
+git clone https://github.com/jheinrichs79/homeServarr.git
 
 if [ $? -eq 0 ]; then
     echo "Repository cloned successfully!"
