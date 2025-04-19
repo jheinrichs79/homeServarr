@@ -43,7 +43,7 @@ else
 fi
 
 # Make all files and folders executable in the specified directory
-cd ~/git/HomeServer/serverScripts
+cd ~/git/homeServarr/serverScripts
 chmod -R +x .
 
 # Install Docker dependencies
@@ -119,6 +119,8 @@ read only = no
 guest ok = yes
 EOF
 
+
+
 # Create public share directory
 sudo mkdir -p /samba/public
 sudo chmod 777 /samba/public
@@ -138,4 +140,3 @@ clear
 
 echo "Access Webmin at https://$IP:10000"
 echo "Access Network Shares at smb://$IP
-
