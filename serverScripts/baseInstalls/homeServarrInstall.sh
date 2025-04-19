@@ -1,10 +1,10 @@
 #!/bin/bash
 #Update Script
-apt update -y
-apt full-upgrade -y
-apt autoremove -y
-apt clean -y
-apt autoclean -y
+sudo apt update -y
+sudo apt full-upgrade -y
+sudo apt autoremove -y
+sudo apt clean -y
+sudo apt autoclean -y
 #END
 
 # Install git if not already installed
