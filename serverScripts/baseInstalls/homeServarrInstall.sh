@@ -139,4 +139,4 @@ echo "Default public share created at /samba/public"
 clear
 
 echo "Access Webmin at https://$IP:10000"
-echo "Access Network Shares at smb://$IP
+echo "Access Network Shares at smb://$IP"
