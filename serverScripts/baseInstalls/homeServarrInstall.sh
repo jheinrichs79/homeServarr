@@ -44,7 +44,7 @@ fi
 
 # Make all files and folders executable in the specified directory
 cd ~/git/homeServarr/serverScripts
-chmod -R +x .
+sudo chmod -R +x .
 
 # Install Docker dependencies
 sudo apt-get update
