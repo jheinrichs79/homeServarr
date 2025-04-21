@@ -1,0 +1,42 @@
+#---------------------------------------------------------------------#
+#     Homarr - A simple, yet powerful dashboard for your server.      #
+#     You need to change all passwords and secrets.                   #
+#---------------------------------------------------------------------#
+services:
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # <--- add this line here!
+      - /home/jared/docker/homarr/appdata:/appdata
+    environment:
+      - SECRET_ENCRYPTION_KEY=4cfbbe4e019ccfa0df4d804ea0b8f41220481c5b33ea9358a98503e9f46e3339 # <--- can be generated with `openssl rand -hex 32`
+    ports:
+      - '7575:7575'
+    restart: unless-stopped
+    
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PASSWORD=password #optional
+      - DEFAULT_WORKSPACE=/config/workspace #optional
+    volumes:
+      - /home/jared/docker/code-server/config:/config
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    command: --H unix:///var/run/docker.sock
+    ports:
+      - 8000:8000
+      - 9443:9443
+    volumes:
+      - /home/jared/docker/portainer/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
