@@ -1,0 +1,116 @@
+#---------------------------------------------------------------------#
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - ${VOL_BASE}/standardApps/portainer/data:/data
+    ports:
+      - ${P_PORTAINER}:9443
+    restart: unless-stopped
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      # Default HTTP Port
+      - ${P_PIHOLE_01}:80/tcp
+      # Default HTTPs Port. FTL will generate a self-signed certificate
+      - ${P_PIHOLE_02}:443/tcp
+      #Pi-hole will act as NTP server
+      - 123:123/udp
+    environment:
+      # Set the appropriate timezone for your location (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g:
+      TZ: ${TZ}
+      # Set a password to access the web interface. Not setting one will result in a random password being assigned
+      FTLCONF_webserver_api_password: ${PASSWORD}
+      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'
+      FTLCONF_dns_listeningMode: 'all'
+    # Volumes store your data between container upgrades
+    volumes:
+      # For persisting Pi-hole's databases and common configuration file
+      - ${VOL_BASE}/standardApps/pihole/etc-pihole:/etc/pihole'
+      # Uncomment the below if you have custom dnsmasq config files that you want to persist. Not needed for most starting fresh with Pi-hole v6. If you're upgrading from v5 you and have used this directory before, you should keep it enabled for the first v6 container start to allow for a complete migration. It can be removed afterwards. Needs environment variable FTLCONF_misc_etc_dnsmasq_d: 'true'
+      #- './etc-dnsmasq.d:/etc/dnsmasq.d'
+    cap_add:
+      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+      # Required if you are using Pi-hole as your DHCP server, else not needed
+      - NET_ADMIN
+      # Required if you are using Pi-hole as your NTP client to be able to set the host's system time
+      - SYS_TIME
+      # Optional, if Pi-hole should get some more processing time
+      - SYS_NICE
+    restart: unless-stopped
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - APP_KEY=
+      - APP_URL=
+      - DB_CONNECTION=sqlite
+      - SPEEDTEST_SCHEDULE=
+      - SPEEDTEST_SERVERS=
+      - DB_HOST= #optional
+      - DB_PORT= #optional
+      - DB_DATABASE= #optional
+      - DB_USERNAME= #optional
+      - DB_PASSWORD= #optional
+      - DISPLAY_TIMEZONE=${TZDISPLAY} #optional
+      - PRUNE_RESULTS_OLDER_THAN=0 #optional
+    volumes:
+      - ${VOL_BASE}/standardApps/speedtest-tracker/data:/config
+    ports:
+      - ${P_SPEEDTRACKER}:80
+    restart: unless-stopped
+  speedtest:
+    image: openspeedtest/latest
+    container_name: openspeedtest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - SET_SERVER_NAME=${SPEEDTEST_NAME}
+    ports:
+      - ${P_SPEEDTEST_01}:3000 #HTTP
+      - ${P_SPEEDTEST_02}:3001 #HTTPS
+    restart: unless-stopped
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - PASSWORD=${PASSWORD} #optional
+      - DEFAULT_WORKSPACE=/config/workspace #optional
+    volumes:
+      - ${VOL_BASE}/standardApps/code-server/config:/config
+    ports:
+      - ${P_CODESERVER}:8443
+    restart: unless-stopped
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - ${VOL_BASE}/standardApps/homarr/appdata:/appdata
+    environment:
+      - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET}  # <--- CHANGE!!!! - update .env file. A ney key can be generated with `openssl rand -hex 32`
+    ports:
+      - ${P_HOMARR}:7575
+    restart: unless-stopped
+  wetty:
+    image: wettyoss/wetty
+    ports:
+      - ${P_WETTY}:3000
+    command: --ssh-host=${WETTY_SSH_HOST}
+    restart: unless-stopped
