@@ -1,0 +1,184 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    # Hostname to use for container, required in some instances for the rest of the stack to each other endpoints 
+    # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
+    hostname: gluetun
+    # line above must be uncommented to allow external containers to connect.
+    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - ${P_GLUETUN}:6881
+      - ${P_GLUETUN}:6881/udp
+      - ${P_BITTORRENT}:8080 # qbittorrent
+      - ${P_PROWLARR}:9696 # Prowlarr
+      - ${P_SONARR}:8989 # Sonarr
+      - ${P_RADARR}:7878 # Radarr
+      - ${P_LIDARR}:8686 # Lidarr
+      - ${P_READARR}:8787 # Readarr
+      - ${P_FLARESOLVERR}:8191 # FlareSolverr
+    volumes:
+      - ${VOL_BASE}/servarr/gluetun/config:/gluetun
+    environment:
+      - TZ=${TZ}
+      - VPN_SERVICE_PROVIDER=${VPNPROVIDER}
+      # VPN Type: OpenVPN:
+      - OPENVPN_USER=${OPENVPNUSER}
+      - OPENVPN_PASSWORD=${OPENVPNPASSWORD}
+      - SERVER_HOSTNAMES=${SERVER_HOSTNAMES}
+      - UPDATER_PERIOD=24h
+    restart: unless-stopped
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - ${VOL_BASE}/servarr/qbittorrent/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_BASE}/servarr/prowlarr/config:/config
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_BASE}/servarr/sonarr/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+      - ${VOL_MEDIA}/tv:/tv
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_BASE}/servarr/radarr/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+      - ${VOL_MEDIA}/movies:/movies
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_BASE}/servarr/lidarr/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+      - ${VOL_MEDIA}/music:/music
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_BASE}/servarr/readarr/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+      - ${VOL_MEDIA}/books:/books
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+  flaresolverr:
+    # DockerHub mirror flaresolverr/flaresolverr:latest
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    network_mode: "service:gluetun"
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_BASE}/servarr/flaresolverr/config:/config
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - VERSION=docker
+      #- PLEX_CLAIM=
+    #ports: #Not needed when using host network mode
+      #- 32400:32400 #http://server:32400/manage
+      #- 1900:1900/udp
+      #- 5353:5353/udp
+      #- 8324:8324
+      #- 32410:32410/udp
+      #- 32412:32412/udp
+      #- 32413:32413/udp
+      #- 32414:32414/udp
+      #- 32469:32469
+    volumes:
+      - ${VOL_BASE}/servarr/plex/config:/config
+      - ${VOL_MEDIA}/tv:/tv
+      - ${VOL_MEDIA}/movies:/movies
+      - ${VOL_MEDIA}/music:/music
+    restart: unless-stopped
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - JELLYFIN_PublishedServerUrl=${JELLYFINSERVER}
+    volumes:
+      - ${VOL_BASE}/servarr/jellyfin/config:/config
+      - ${VOL_MEDIA}/tv:/data/tvshows
+      - ${VOL_MEDIA}/movies:/data/movies
+      - ${VOL_MEDIA}/music:/data/music
+      - ${VOL_MEDIA}/books:/data/books
+    ports:
+      - ${P_JELLYFIN_01}:8096
+      - ${P_JELLYFIN_02}:8920
+      - 7359:7359/udp
+      - 1900:1900/udp
+    restart: unless-stopped
