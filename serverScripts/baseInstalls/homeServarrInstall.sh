@@ -9,10 +9,11 @@ sudo apt autoclean -y
 
 CONFIG_FILE="/etc/systemd/resolved.conf"
 # Ensure the line is uncommented and changed
-sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' "$CONFIG_FILE"
+sudo sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' "$CONFIG_FILE"
 
 # Restart systemd-resolved to apply the changes
-systemctl restart systemd-resolved
+sudo systemctl restart systemd-resolved
+sudo service systemd-resolved restart
 
 echo "Updated DNSStubListener setting and restarted systemd-resolved."
 
@@ -44,6 +45,8 @@ cd git
 # Clone the repository
 echo "Cloning repository..."
 git clone https://github.com/jheinrichs79/homeServarr.git
+
+read -n 1 -s -p "Press any key to continue..."
 
 if [ $? -eq 0 ]; then
     echo "Repository cloned successfully!"
