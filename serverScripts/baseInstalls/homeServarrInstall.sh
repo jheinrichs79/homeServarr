@@ -7,6 +7,15 @@ sudo apt clean -y
 sudo apt autoclean -y
 #END
 
+CONFIG_FILE="/etc/systemd/resolved.conf"
+# Ensure the line is uncommented and changed
+sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' "$CONFIG_FILE"
+
+# Restart systemd-resolved to apply the changes
+systemctl restart systemd-resolved
+
+echo "Updated DNSStubListener setting and restarted systemd-resolved."
+
 # Install git if not already installed
 if ! command -v git &> /dev/null; then
     echo "Git not found. Installing git..."
