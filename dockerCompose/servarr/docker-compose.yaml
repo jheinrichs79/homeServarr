@@ -2,7 +2,7 @@ services:
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
-    # Hostname to use for container, required in some instances for the rest of the stack to each other endpoints 
+    # Hostname to use for the container, required in some instances for the rest of the stack to communicate with all other endpoints 
     # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
     hostname: gluetun
     # line above must be uncommented to allow external containers to connect.
@@ -12,9 +12,9 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
-      - ${P_GLUETUN}:6881
-      - ${P_GLUETUN}:6881/udp
-      - ${P_BITTORRENT}:8080 # qbittorrent
+      - ${P_BITTORRENT}:6881 # qbittorrent download
+      - ${P_BITTORRENT}:6881/udp # qbittorrent download
+      - ${P_BITTORRENT_GUI}:8080 # qbittorrent
       - ${P_PROWLARR}:9696 # Prowlarr
       - ${P_SONARR}:8989 # Sonarr
       - ${P_RADARR}:7878 # Radarr
