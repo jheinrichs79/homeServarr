@@ -71,6 +71,9 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 # Add current user to docker group
 sudo usermod -aG docker $USER
 
+#pause
+read -n 1 -s -p "Press any key to continue..."
+
 # Verify installation
 docker --version
 
