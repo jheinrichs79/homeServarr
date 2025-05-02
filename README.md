@@ -33,7 +33,7 @@ The layout of the repository will look like this:
 * dockerCompose
   - standardApps
   - servarr
-  - optionalApps
+  - extraApps
 
 ## Automation File Types
 For my setup, I will be hosting a multitude of items to make setting up a home server:
@@ -60,7 +60,7 @@ These are the Docker apps that form the base of the Home Server
 * Code-Server
 * Homarr
 
-### Optional Home Server App
+### Extra Home Server Apps
 * Cloudflare tunnel
 * MonkeyType
 
