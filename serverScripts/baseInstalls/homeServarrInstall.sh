@@ -1,12 +1,6 @@
 #!/bin/bash
-#Update Script
-sudo apt update -y
-sudo apt full-upgrade -y
-sudo apt autoremove -y
-sudo apt clean -y
-sudo apt autoclean -y
-#END
 
+#Ensures the server is setup for the pi-hole install
 CONFIG_FILE="/etc/systemd/resolved.conf"
 # Ensure the line is uncommented and changed
 sudo sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' "$CONFIG_FILE"
