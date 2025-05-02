@@ -24,19 +24,6 @@ The layout of the repository will look like this:
 
 ![alt text](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F14ed6356-7858-4f9b-85b6-6a27e106c6b5_918x823.png)
 
-* serverScripts
-  - baseInstalls
-    - webin
-    - docker
-    - samba
-  - troubleShooting
-    - docker
-  - scheduledTasks
-* dockerCompose
-  - standardApps
-  - servarr
-  - extraApps
-
 ## Automation File Types
 For my setup, I will be hosting a multitude of items to make setting up a home server:
 * Server Scripts (Shell scripts)
