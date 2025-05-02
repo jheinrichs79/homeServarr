@@ -102,9 +102,3 @@ services:
     ports:
       - ${P_HOMARR}:7575
     restart: unless-stopped
-  wetty:
-    image: wettyoss/wetty
-    ports:
-      - ${P_WETTY}:3000
-    command: --ssh-host=${WETTY_SSH_HOST}
-    restart: unless-stopped
