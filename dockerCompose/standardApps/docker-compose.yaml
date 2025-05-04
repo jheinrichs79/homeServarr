@@ -8,7 +8,7 @@ services:
       - PGID=1000
       - TZ=${TZ}
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock 
+      - /var/run/docker.sock:/var/run/docker.sock
       - ${VOL_BASE}/standardApps/portainer/data:/data
     ports:
       - ${P_PORTAINER}:9443
