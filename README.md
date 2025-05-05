@@ -64,6 +64,7 @@ This Docker Compose stack will easily install all these pieces of software.
 * qbittorrent
 * Plex
 * Jellyfin
+* JDownloader-2
 
 
 
