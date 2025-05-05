@@ -1,0 +1,45 @@
+#!/bin/bash
+echo "Welcome to the homeServar SAMBA setup script!"
+echo "========================================================================="
+echo "written by: Jared Heinrichs"
+echo "How it works:"
+echo "  This script will copy a new SMB config file and replace variables"
+echo "  inside the file. The script will ask you for a few questions
+echo "-------------------------------------------------------------------------"
+echo ""
+
+# Get the hostname
+hostname=$(hostname)
+
+# Prompt for Linux username
+read -p "Enter your Linux username: " linux_user
+
+# Prompt for SMB password
+echo ""
+echo ""
+echo "We will now be creating a new SMB user named: 'homeservarr'
+read -s -p "Enter password for SMB user 'homeservarr': " smb_password
+echo ""
+
+# Create the SMB user
+sudo smbpasswd -a homeservarr <<< "$smb_password"
+
+# Replace occurrences of '**USER**' in smb.conf
+sudo sed -i "s/**USER**/$linux_user/g" /etc/samba/smb.conf
+
+# Restart Samba service to apply changes
+sudo systemctl restart smbd
+
+# Display connection instructions
+echo ""
+echo ""
+echo "SMB user 'homeservarr' created and smb.conf updated successfully!"
+echo "To connect to this server, please use this format: \\\\$hostname\\"
+echo ""
+echo ""
+echo "You will need to enter this user info in order to access the shares:
+echo "user: homeservarr"
+echo "pass: $smb_password"
+echo ""
+echo ""
+
