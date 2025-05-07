@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo "==================================================="
+echo " Welcome to the homeServarr Setup Script
+echo " Written by: Jared Heinrichs"
+echo " https://github.com/jheinrichs79/homeServarr"
+echo "==================================================="
+
 #Ensures the server is setup for the pi-hole install
 CONFIG_FILE="/etc/systemd/resolved.conf"
 # Ensure the line is uncommented and changed
