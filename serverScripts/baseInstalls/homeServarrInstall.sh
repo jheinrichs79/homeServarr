@@ -134,29 +134,7 @@ create mask = 0777
 directory mask = 0777
 force create mode = 0777
 force directory mode = 0777
-
-[homes]
-comment = Home Directories
-browseable = no
-read only = no
-create mask = 0700
-directory mask = 0700
-
-[public]
-comment = Public Share
-path = /samba/public
-browseable = yes
-create mask = 0777
-directory mask = 0777
-read only = no
-guest ok = yes
 EOF
-
-
-
-# Create public share directory
-sudo mkdir -p /samba/public
-sudo chmod 777 /samba/public
 
 # Restart Samba service
 sudo systemctl restart smbd
