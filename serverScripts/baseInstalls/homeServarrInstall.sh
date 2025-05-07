@@ -53,16 +53,21 @@ cd ~/git/homeServarr/serverScripts
 sudo chmod -R +x .
 
 # Install Docker dependencies
-sudo apt-get update
 sudo apt-get install -y ca-certificates curl gnupg
 
 # Add Docker's official GPG key
+echo "Add Docker's official GPG key"
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo ""
+echo ""
 
 # Add Docker repository
+echo "Add Docker Repository"
 echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo ""
+echo ""
 
 # Install Docker
 sudo apt-get update
@@ -86,12 +91,31 @@ sudo apt install -y webmin
 # Get IP address and display access info
 IP=$(hostname -I | cut -d' ' -f1)
 echo "Webmin installed successfully!"
-echo "Access Webmin at https://$IP:10000"
+echo ""
+echo ""
 
 # Install Samba and dependencies
 echo "Installing Samba..."
-sudo apt-get update
 sudo apt-get install -y samba samba-common-bin
+
+#Setup SAMBA USER
+echo "Creating SAMBA user: 'homeservarr'"
+
+#Add the Samba User
+sudo smbpasswd -a homeservarr
+
+#Enable the User in Samba
+sudo smbpasswd -e homeservarr
+echo ""
+echo "Verifying SAMBA Users created"
+sudo pdbedit -L | grep homeservarr
+echo ""
+echo ""
+echo "Restarting SAMBA Service"
+sudo systemctl restart smbd nmbd
+read -n 1 -s -p "Press any key to continue..."
+echo ""
+echo ""
 
 # Create Samba config backup
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
@@ -138,14 +162,17 @@ sudo chmod 777 /samba/public
 sudo systemctl restart smbd
 sudo systemctl restart nmbd
 
-# Add Samba through firewall
-sudo ufw allow samba
-
+echo ""
+echo ""
 echo "Samba installation complete!"
 echo "Default public share created at /samba/public"
+echo ""
+echo ""
 
-#ClearScreen
-#clear
+# Disable Firewall
+sudo ufw disable
+sudo systemctl stop firewalld
 
+echo ""
 echo "Access Webmin at https://$IP:10000"
 echo "Access Network Shares at smb://$IP"
