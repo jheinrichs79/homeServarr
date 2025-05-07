@@ -128,18 +128,44 @@ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
 # Configure Samba for workgroup
 cat << EOF | sudo tee /etc/samba/smb.conf
+# Global Samba Configuration
 [global]
-workgroup = WORKGROUP
-server string = Samba Server
-security = user
-map to guest = bad user
-unix extensions = yes
-follow symlinks = yes
-wide links = yes
-create mask = 0777
-directory mask = 0777
-force create mode = 0777
-force directory mode = 0777
+   workgroup = WORKGROUP
+   server string = Samba Server
+   netbios name = homeservarr
+   disable netbios = no
+   security = user
+   map to guest = Bad User
+   dns proxy = no
+
+   # Enable file sharing with Windows
+   server role = standalone
+   hosts allow = 192.168.101.0/24
+   load printers = no
+   printing = bsd
+   disable spoolss = yes
+
+   # Enable SMB versions (compatible with Windows)
+   server min protocol = SMB2
+   server max protocol = SMB3
+
+   # Allow authentication
+   passdb backend = tdbsam
+   smb encrypt = required
+
+# Share Configuration
+[Shared]
+   comment = Shared Files
+   path = /home/homeservarr/shared
+   browseable = yes
+   writable = yes
+   guest ok = no
+   valid users = homeservarr
+   create mask = 0775
+   directory mask = 0755
+   force user = homeservarr
+   force create mode = 0775
+   force directory mode = 0775
 EOF
 
 # Restart Samba service
