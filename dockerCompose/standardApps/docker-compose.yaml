@@ -102,3 +102,21 @@ services:
     ports:
       - ${P_HOMARR}:7575
     restart: unless-stopped
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ${VOL_BASE}/standardApps/syncthing/config:/config
+      - ${VOL_BASE}/standardApps/syncthing/data1:/data1
+      - ${VOL_BASE}/standardApps/syncthing/data2:/data2
+    ports:
+      - ${P_SYNCTHING_01}:8384
+      - ${P_SYNCTHING_02}:22000/tcp
+      - ${P_SYNCTHING_03}:22000/udp
+      - ${P_SYNCTHING_01}:21027/udp
+    restart: unless-stopped
