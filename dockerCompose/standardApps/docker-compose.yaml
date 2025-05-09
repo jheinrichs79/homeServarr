@@ -105,7 +105,7 @@ services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing
-    hostname: syncthing #optional
+    hostname: ${SYNCTHING_NAME}
     environment:
       - PUID=1000
       - PGID=1000
