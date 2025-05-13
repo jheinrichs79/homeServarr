@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "==================================================="
-echo " Welcome to the homeServarr Setup Script
+echo " Welcome to the homeServarr Setup Script"
 echo " Written by: Jared Heinrichs"
 echo " https://github.com/jheinrichs79/homeServarr"
 echo "==================================================="
