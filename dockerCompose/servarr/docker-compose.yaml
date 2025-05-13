@@ -182,7 +182,7 @@ services:
       - 7359:7359/udp
       - 1900:1900/udp
     restart: unless-stopped
-jdownloader-2:
+  jdownloader-2:
     image: jlesage/jdownloader-2
     ports:
       - ${P_JDOWNLOADER}:5800
