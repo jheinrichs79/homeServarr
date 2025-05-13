@@ -64,7 +64,7 @@ services:
       options:
         max-file: "10"
         max-size: "200k"
-    restart: unless-stopped  
+    restart: unless-stopped
   speedtest:
     image: openspeedtest/latest
     container_name: openspeedtest
