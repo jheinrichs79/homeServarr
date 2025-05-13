@@ -176,6 +176,7 @@ services:
       - ${VOL_MEDIA}/movies:/data/movies
       - ${VOL_MEDIA}/music:/data/music
       - ${VOL_MEDIA}/books:/data/books
+      - ${VOL_MEDIA}/jellymedia:/data/jellymedia
     ports:
       - ${P_JELLYFIN_01}:8096
       - ${P_JELLYFIN_02}:8920
