@@ -15,6 +15,9 @@ sudo sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' "$CONFIG_FILE"
 sudo systemctl restart systemd-resolved
 sudo service systemd-resolved restart
 
+#Install smart monitoring for Hard drives
+sudo apt install smartmontools
+
 echo "Updated DNSStubListener setting and restarted systemd-resolved."
 
 # Install git if not already installed
