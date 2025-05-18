@@ -185,6 +185,7 @@ services:
     restart: unless-stopped
   jdownloader-2:
     image: jlesage/jdownloader-2
+    container_name: jdownloader
     ports:
       - ${P_JDOWNLOADER}:5800
     volumes:
