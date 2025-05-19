@@ -148,7 +148,7 @@ services:
     restart: unless-stopped
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:latest
+    image: image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
     # extends:
     #   file: hwaccel.transcoding.yml
     #   service: cpu # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
