@@ -139,7 +139,7 @@ services:
     ports:
       - ${P_DRAWIO}:8080
     environment:
-      DRAWIO_BASE_URL: "http://localhost:8080" 
+      DRAWIO_BASE_URL: "http://localhost:8080"
   excalidraw:
     container_name: excalidraw
     image: excalidraw/excalidraw:latest
