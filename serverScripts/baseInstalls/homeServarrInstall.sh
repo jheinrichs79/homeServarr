@@ -10,6 +10,7 @@ echo "==================================================="
 #     /home/homeservarr
 #========================================================
 cd ~
+#mkdir media <-- This folder should already be made if you are following along on my substack "https://jaredheinrichs.substack.com/publish/post/161605988"
 mkdir git
 mkdir media
 mkdir downloads
