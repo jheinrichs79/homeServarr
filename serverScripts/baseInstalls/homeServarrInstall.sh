@@ -1,12 +1,23 @@
 #!/bin/bash
-
 echo "==================================================="
 echo " Welcome to the homeServarr Setup Script"
 echo " Written by: Jared Heinrichs"
 echo " https://github.com/jheinrichs79/homeServarr"
 echo "==================================================="
 
-#Ensures the server is setup for the pi-hole install
+
+# Make default folders in homeservarr home directory
+#     /home/homeservarr
+#========================================================
+cd ~
+mkdir git
+mkdir media
+mkdir downloads
+mkdir shared
+
+
+#Ensures the server is setup for pi-hole docker install
+#========================================================
 CONFIG_FILE="/etc/systemd/resolved.conf"
 # Ensure the line is uncommented and changed
 sudo sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' "$CONFIG_FILE"
@@ -14,13 +25,16 @@ sudo sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' "$CONFIG_FILE"
 # Restart systemd-resolved to apply the changes
 sudo systemctl restart systemd-resolved
 sudo service systemd-resolved restart
-
-#Install smart monitoring for Hard drives
-sudo apt install smartmontools
-
 echo "Updated DNSStubListener setting and restarted systemd-resolved."
 
+
+#Install smart monitoring for Hard drives
+#========================================================
+sudo apt install smartmontools
+
+
 # Install git if not already installed
+#========================================================
 if ! command -v git &> /dev/null; then
     echo "Git not found. Installing git..."
     sudo apt-get update
@@ -40,12 +54,11 @@ if [ -z "$(git config --global user.email)" ]; then
     git config --global user.email "$git_email"
 fi
 
-# Make the directory where all git clones will go.
-cd ~
-mkdir git
-cd git
 
 # Clone the repository
+#========================================================
+cd ~
+cd git
 echo "Cloning repository..."
 git clone https://github.com/jheinrichs79/homeServarr.git
 
@@ -58,10 +71,13 @@ else
 fi
 
 # Make all files and folders executable in the specified directory
+#========================================================
 cd ~/git/homeServarr/serverScripts
 sudo chmod -R +x .
 
+
 # Install Docker dependencies
+#========================================================
 sudo apt-get install -y ca-certificates curl gnupg
 
 # Add Docker's official GPG key
@@ -78,7 +94,9 @@ echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docke
 echo ""
 echo ""
 
+
 # Install Docker
+#========================================================
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
@@ -91,7 +109,9 @@ read -n 1 -s -p "Press any key to continue..."
 # Verify installation
 docker --version
 
+
 # Install webmin
+#========================================================
 echo "Installing webmin..."
 sudo curl -o setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh; sudo bash setup-repos.sh
 sudo apt install -y webmin
@@ -103,7 +123,9 @@ echo "Webmin installed successfully!"
 echo ""
 echo ""
 
+
 # Install Samba and dependencies
+#========================================================
 echo "Installing Samba..."
 sudo apt-get install -y samba samba-common-bin
 
@@ -128,52 +150,14 @@ echo ""
 
 # Create Samba config backup
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
-
-# Configure Samba for workgroup
-cat << EOF | sudo tee /etc/samba/smb.conf
-# Global Samba Configuration
-[global]
-   workgroup = WORKGROUP
-   server string = Samba Server
-   netbios name = homeservarr
-   disable netbios = no
-   security = user
-   map to guest = Bad User
-   dns proxy = no
-
-   # Enable file sharing with Windows
-   server role = standalone
-   hosts allow = 192.168.101.0/24
-   load printers = no
-   printing = bsd
-   disable spoolss = yes
-
-   # Enable SMB versions (compatible with Windows)
-   server min protocol = SMB2
-   server max protocol = SMB3
-
-   # Allow authentication
-   passdb backend = tdbsam
-   smb encrypt = required
-
-# Share Configuration
-[Shared]
-   comment = Shared Files
-   path = /home/homeservarr/shared
-   browseable = yes
-   writable = yes
-   guest ok = no
-   valid users = homeservarr
-   create mask = 0775
-   directory mask = 0755
-   force user = homeservarr
-   force create mode = 0775
-   force directory mode = 0775
-EOF
+sudo cp /home/homeservarr/git/homeServarr/configFiles/full.smb.conf /etc/samba/smb.conf
 
 # Restart Samba service
 sudo systemctl restart smbd
 sudo systemctl restart nmbd
+
+#Edit SMB.CONF file
+sudo nano /etc/samba/smb.conf
 
 echo ""
 echo ""
