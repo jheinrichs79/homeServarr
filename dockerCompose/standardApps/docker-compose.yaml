@@ -127,10 +127,10 @@ services:
       - ${P_DOCUMENTSERVER_01}:80
       - ${P_DOCUMENTSERVER_02}:443
     volumes:
-      - ${VOL_BASE}documentserver/data:/var/www/onlyoffice/Data
-      - ${VOL_BASE}documentserver/log:/var/log/onlyoffice
-      - ${VOL_BASE}documentserver/lib:/var/lib/onlyoffice
-      - ${VOL_BASE}documentserver/db:/var/lib/postgresql
+      - ${VOL_BASE}/standardApps/documentserver/data:/var/www/onlyoffice/Data
+      - ${VOL_BASE}/standardApps/documentserver/log:/var/log/onlyoffice
+      - ${VOL_BASE}/standardApps/documentserver/lib:/var/lib/onlyoffice
+      - ${VOL_BASE}/standardApps/documentserver/db:/var/lib/postgresql
     environment:
       - JWT_SECRET=${PASSWORD}
     restart: unless-stopped
