@@ -223,6 +223,20 @@ services:
       - ${P_CALIBRE_02}:8181
       - ${P_CALIBRE_03}:8081
     restart: unless-stopped
-
+  darktable:
+    image: lscr.io/linuxserver/darktable:latest
+    container_name: darktable
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_BASE}/darktable/config:/config
+    ports:
+      - ${P_DARKTABLE_01}:3000
+      - ${P_DARKTABLE_01}:3001
+    restart: unless-stopped
 volumes:
   model-cache:
