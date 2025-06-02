@@ -238,5 +238,22 @@ services:
       - ${P_DARKTABLE_01}:3000
       - ${P_DARKTABLE_01}:3001
     restart: unless-stopped
+  netalertx:
+    container_name: netalertx
+    image: "ghcr.io/jokob-sk/netalertx:latest"
+    network_mode: "host"
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZDISPLAY}
+      - PORT=${P_NETALERTX_01}
+    volumes:
+      - ${VOL_BASE}/netalertx/config:/app/config
+      - ${VOL_BASE}/netalertx/db:/app/db
+      - ${VOL_BASE}/netalertx/logs:/app/log
+      - ${VOL_BASE}/netalertx/api:/app/api
+    restart: unless-stopped
 volumes:
   model-cache:
