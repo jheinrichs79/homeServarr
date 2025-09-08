@@ -1,4 +1,4 @@
-#!/bin/bash
+s#!/bin/bash
 echo "==================================================="
 echo " Welcome to the homeServarr Setup Script"
 echo " Written by: Jared Heinrichs"
@@ -170,6 +170,9 @@ echo ""
 # Disable Firewall
 sudo ufw disable
 sudo systemctl stop firewalld
+
+#Browse machine through Network (SMB)
+sudo apt install wsdd-server
 
 echo ""
 echo "Access Webmin at https://$IP:10000"
