@@ -8,3 +8,4 @@ services:
       - /home/YOUR_USERNAME/docker/copyparty/config:/cfg/config.conf:ro #copyparty config file location
       - /home/YOUR_USERNAME/docker/copyparty/db:/cfg/hists #database files
       - /home/YOUR_USERNAME/media:/media #files being exposed to copyparty
+    restart: unless-stopped
