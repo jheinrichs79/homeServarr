@@ -1,0 +1,2 @@
+Place your certs in the data cert directory.
+There are two certs and you can see the locations in the .env and docker-compose.yaml files
