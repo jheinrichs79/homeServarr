@@ -216,7 +216,7 @@ services:
       - PGID=1000
       - TZ=${TZ}
     volumes:
-      - ${VOL_BASE}/calibre/config:/config
+      - ${VOL_BASE}/standardApps/calibre/config:/config
       - ${VOL_MEDIA}/books:/books
     ports:
       - ${P_CALIBRE_01}:8080
@@ -233,10 +233,10 @@ services:
       - PGID=1000
       - TZ=${TZ}
     volumes:
-      - ${VOL_BASE}/darktable/config:/config
+      - ${VOL_BASE}/standardApps/darktable/config:/config
     ports:
       - ${P_DARKTABLE_01}:3000
-      - ${P_DARKTABLE_01}:3001
+      - ${P_DARKTABLE_02}:3001
     restart: unless-stopped
   netalertx:
     container_name: netalertx
@@ -250,10 +250,10 @@ services:
       - TZ=${TZDISPLAY}
       - PORT=${P_NETALERTX_01}
     volumes:
-      - ${VOL_BASE}/netalertx/config:/app/config
-      - ${VOL_BASE}/netalertx/db:/app/db
-      - ${VOL_BASE}/netalertx/logs:/app/log
-      - ${VOL_BASE}/netalertx/api:/app/api
+      - ${VOL_BASE}/standardApps/netalertx/config:/app/config
+      - ${VOL_BASE}/standardApps/netalertx/db:/app/db
+      - ${VOL_BASE}/standardApps/netalertx/logs:/app/log
+      - ${VOL_BASE}/standardApps/netalertx/api:/app/api
     restart: unless-stopped
 volumes:
   model-cache:
