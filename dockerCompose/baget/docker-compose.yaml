@@ -1,0 +1,8 @@
+services:
+  baget:
+    image: loicsharma/baget:latest
+    container_name: nuget-server
+    ports:
+      - "5555:80"
+    volumes:
+      - ${VOL_BASE}/baget:/var/baget
